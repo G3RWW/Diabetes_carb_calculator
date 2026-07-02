@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+markdown# Diabeto Skaičiuoklė
 
-## Getting Started
+A simple carb-tracking diary. Pick a food product, enter how many grams you're eating, and it logs the carbohydrate total for that entry.
 
-First, run the development server:
+## Requirements
 
-```bash
+- [Node.js](https://nodejs.org/) 20 or newer
+- npm (comes with Node.js)
+
+## Setup
+
+1. Clone the repository and install dependencies:
+git clone <your-repo-url>
+cd diabeto_skaiciuokle
+npm install
+
+2. Create your local environment file:
+cp .env.example .env
+   (On Windows, use `copy .env.example .env`.)
+
+3. Create the database and tables:
+npx prisma migrate dev
+   This creates a local `dev.db` file with an empty database — no products or entries yet.
+
+4. Start the app:
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Adding products
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+There's no starter product list — add your own via the **Products** page, either by:
+- entering a barcode (looked up automatically via Open Food Facts), or
+- entering a name and carbs-per-100g manually.
 
-## Learn More
+## Tech stack
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js (App Router)
+- Prisma + SQLite
+- TypeScript

@@ -1,15 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import styles from "./add.module.css"
 
 export default function AddPage() 
 {
+    //barkodiniam ivedimui (barcode input)
     const [barcode, setBarcode] = useState("");
     const [result, setResult] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    // Rankiniam ivedimui (manual input)
+    const [manualName, setManualName] = useState("");
+    const [manualCarbs, setManualCarbs] = useState("");
+    const [manualLoading, setManualLoading] = useState(false);
+    const [manualSaved, setManualSaved] = useState(false);
 
     async function handleLookup() 
     {
@@ -42,6 +47,24 @@ export default function AddPage()
         }
     }
 
+    async function handleManualAdd()
+    {
+      setManualLoading(true);
+      setManualSaved(false);
+
+      await fetch("/api/products",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: manualName, carbsPer100: parseFloat(manualCarbs) }),
+        });
+
+        setManualName("");
+        setManualCarbs("");
+        setManualLoading(false);
+        setManualSaved(true);
+    }
+
     return (
     <div>
       <h1>Add Product</h1>
@@ -66,6 +89,32 @@ export default function AddPage()
           <div className={styles.resultRow}>Carbs: {result.carbsPer100}g</div>
         </div>
       )}
+
+      <hr />
+
+      <h1>Manual Add</h1>
+
+      <div className={styles.form}>
+        <input
+          type = "text"
+          value = {manualName}
+          onChange = {(e) => setManualName(e.target.value)}
+          placeholder = "Enter product name"
+        />
+
+        <input
+          type = "number"
+          value = {manualCarbs}
+          onChange = {(e) => setManualCarbs(e.target.value)}
+          placeholder = "Enter carbs per 100g"
+        />
+
+        <button onClick={handleManualAdd} disabled={manualLoading}>
+          {manualLoading ? "Saving..." : "Save"}
+        </button>
+        {manualSaved && <p className={styles.success}>Product saved successfully!</p>}
+      </div>
     </div>
+    
   );
 }

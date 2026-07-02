@@ -1,22 +1,30 @@
 import { prisma } from "@/lib/prisma";
+import AddEntryForm from "./AddEntryForm";
+import EntryRow from "./EntryRow";
 
 export default async function Home() {
-  const entries = await prisma.entry.findMany({
-    orderBy: { loggedAt: "desc" },
-    take: 10,
-  });
+  const [entries, products] = await Promise.all([
+    prisma.entry.findMany({ orderBy: {loggedAt: "desc"}, take: 10}),
+    prisma.product.findMany({ orderBy: { name: "asc" } }),
+  ])
+
+  const total = entries.reduce((sum, e) => sum + e.carbsTotal, 0);
 
   return (
     <main>
       <h1>Diary</h1>
+
+      <AddEntryForm products={products} />
+
+      <p>Total: {total.toFixed(1)}g carbs</p>
+
       {entries.length === 0 ? (
-        <p>No entries yet.</p>
+        <p>No entries yet</p>
       ) : (
         <ul>
-          {entries.map((entry) => (
-            <li key={entry.id}>
-              {entry.customName ?? "Product"} — {entry.carbsTotal}g carbs
-            </li>
+          {entries.map((entry) => 
+          (
+            <EntryRow key={entry.id} entry={entry} products={products} />
           ))}
         </ul>
       )}

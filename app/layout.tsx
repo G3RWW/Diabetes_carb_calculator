@@ -11,7 +11,7 @@ export default function RootLayout({
       <body>
         <div className="app-shell">
           <header className="app-header">
-            <h1>Diabeto skaičiuoklė</h1>
+            <h1>Carb Calculator</h1>
           </header>
 
           <main className="app-content">{children}</main>
