@@ -1,4 +1,4 @@
-markdown# Diabeto Skaičiuoklė
+Diabeto Skaičiuoklė
 
 A simple carb-tracking diary. Pick a food product, enter how many grams you're eating, and it logs the carbohydrate total for that entry.
 
