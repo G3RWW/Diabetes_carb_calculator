@@ -1,28 +1,24 @@
+import AuthProvider from "./components/AuthProvider";
+import Nav from "./components/Nav";
 import "./globals.css";
-import Link from "next/link";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <div className="app-shell">
-          <header className="app-header">
-            <h1>Carb Calculator</h1>
-            <Link href="/">Diary</Link>
-            <Link href="/products/add">Add</Link>
-            <Link href="/products">Products</Link>
-          </header>
+        <AuthProvider>
+          <div className="app-shell">
+            <header className="app-header">
+              <h1>Carb Calculator</h1>
+              <Nav />
+            </header>
 
-          <main className="app-content">{children}</main>
-
-          <nav className="app-nav">
-            <p>© 2026 Dovydas. G</p>
-          </nav>
-        </div>
+            <main className="app-content">{children}</main>
+            <nav className="app-nav">
+              <p>© 2026 Dovydas. G</p>
+            </nav>
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

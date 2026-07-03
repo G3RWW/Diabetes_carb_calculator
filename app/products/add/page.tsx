@@ -19,6 +19,7 @@ export default function AddPage()
     const [manualCarbs, setManualCarbs] = useState("");
     const [manualLoading, setManualLoading] = useState(false);
     const [manualSaved, setManualSaved] = useState(false);
+    const [ManualError, setManualError] = useState<string | null>(null);
 
     async function handleLookup() 
     {
@@ -51,22 +52,32 @@ export default function AddPage()
         }
     }
 
-    async function handleManualAdd()
-    {
+    async function handleManualAdd() {
       setManualLoading(true);
       setManualSaved(false);
+      setManualError(null); // you'll need to add this state too
 
-      await fetch("/api/products",
-        {
+      try {
+        const response = await fetch("/api/products", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name: manualName, carbsPer100: parseFloat(manualCarbs) }),
         });
 
-        setManualName("");
-        setManualCarbs("");
+        const data = await response.json();
+
+        if (!response.ok) {
+          setManualError(data.error || "Failed to save product");
+        } else {
+          setManualName("");
+          setManualCarbs("");
+          setManualSaved(true);
+        }
+      } catch (err) {
+        setManualError("Network error");
+      } finally {
         setManualLoading(false);
-        setManualSaved(true);
+      }
     }
 
     useEffect(() =>

@@ -1,9 +1,20 @@
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 import Link from "next/link";
 import styles from "./products.module.css";
 
 export default async function ProductsPage() {
+  const session = await auth ();
+
   const products = await prisma.product.findMany({
+    where: 
+    {
+      OR:
+      [
+        { userId: null},
+        { userId: session?.user?.id },
+      ],
+    },
     orderBy: { name: "asc" },
   });
 

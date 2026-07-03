@@ -10,21 +10,25 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  async function handleLogin() {
+  async function handleLogin() 
+  {
     setLoading(true);
     setError(null);
-
-    const result = await signIn("credentials", {
+    const result = await signIn("credentials", 
+      {
       email,
       password,
       redirect: false,
-    });
-
-    if (result?.error) {
-      setError("Invalid email or password");
-    } else {
-      router.push("/"); // wherever your diary/home page is
-    }
+      });
+    if (result?.error) 
+      {
+        setError("Invalid email or password");
+      } 
+    else 
+      {
+        router.refresh();
+        router.push("/");
+      }
     setLoading(false);
   }
 
