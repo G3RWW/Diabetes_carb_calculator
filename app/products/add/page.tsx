@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import {useEffect} from "react";
-import {Html5Qrcode} from "html5-qrcode";
+import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
 import styles from "./add.module.css"
 
 export default function AddPage() 
@@ -84,7 +84,15 @@ export default function AddPage()
     {
       if(!scanning) return;
 
-      const scanner = new Html5Qrcode("barcode-reader");
+      const scanner = new Html5Qrcode("barcode-reader", {
+        formatsToSupport: [
+          Html5QrcodeSupportedFormats.EAN_13,
+          Html5QrcodeSupportedFormats.EAN_8,
+          Html5QrcodeSupportedFormats.UPC_A,
+          Html5QrcodeSupportedFormats.UPC_E,
+        ],
+        verbose: false,
+      });
 
       scanner
       .start(
@@ -127,18 +135,20 @@ export default function AddPage()
           {scanning ? "Stop Scanning" : "Scan Barcode"}
         </button>
         <p> or </p>
-        {scanning && <div id="barcode-reader" style={{width: 300}}></div>}
-        
-          <input
-            type="text"
-            value={barcode}
-            onChange={(e) => setBarcode(e.target.value)}
-            placeholder="Enter barcode"
-          />
-          <button onClick={handleLookup} disabled={loading}>
-            {loading ? "Looking up..." : "Lookup"}
-          </button>
+        <input
+          type="text"
+          value={barcode}
+          onChange={(e) => setBarcode(e.target.value)}
+          placeholder="Enter barcode"
+        />
+        <button onClick={handleLookup} disabled={loading}>
+          {loading ? "Looking up..." : "Lookup"}
+        </button>
       </div>
+
+      {scanning && (
+        <div id="barcode-reader" className={styles.scanner} />
+      )}
 
       {error && <p className={styles.error}>{error}</p>}
 

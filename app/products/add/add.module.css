@@ -21,3 +21,27 @@
   gap: 8px;
   padding: 4px 0;
 }
+
+.scanner {
+  width: 100%;
+  max-width: 400px;
+  min-height: 300px;
+  margin-top: 12px;
+}
+
+@media (max-width: 480px) {
+  .form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form input,
+  .form button {
+    width: 100%;
+  }
+
+  .resultRow {
+    flex-direction: column;
+    gap: 2px;
+  }
+}

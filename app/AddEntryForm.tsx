@@ -19,21 +19,26 @@ export default function AddEntryForm({ products }: { products: Produt[] })
     const preview = selected && grams ? (selected.carbsPer100 * Number(grams)) / 100 : 0;
 
     async function handleAdd() {
-        {
-            if (!selectedId || !grams) return;
-                setLoading(true);
-            
-            await fetch("/api/entries/add", 
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ productId: selectedId, amountGrams: Number(grams) }),
-                });
+        if (!selectedId || !grams) return;
+        setLoading(true);
+
+        const response = await fetch("/api/entries/add", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ productId: selectedId, amountGrams: Number(grams) }),
+        });
+
+        if (!response.ok) {
+            const data = await response.json();
+            alert(data.error || data.message || "Failed to add entry"); // quick visible feedback for now
+            setLoading(false);
+            return;
         }
+
         setGrams("");
         setLoading(false);
         router.refresh();
-    }
+        }
 
     return (
         <div>
