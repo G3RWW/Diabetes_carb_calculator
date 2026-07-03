@@ -12,14 +12,15 @@ export default function RootLayout({
         <div className="app-shell">
           <header className="app-header">
             <h1>Carb Calculator</h1>
+            <Link href="/">Diary</Link>
+            <Link href="/products/add">Add</Link>
+            <Link href="/products">Products</Link>
           </header>
 
           <main className="app-content">{children}</main>
 
           <nav className="app-nav">
-            <Link href="/">Diary</Link>
-            <Link href="/products/add">Add</Link>
-            <Link href="/products">Products</Link>
+            <p>© 2026 Dovydas. G</p>
           </nav>
         </div>
       </body>

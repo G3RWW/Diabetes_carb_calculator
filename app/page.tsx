@@ -12,7 +12,7 @@ export default async function Home() {
 
   return (
     <main>
-      <h1>Diary</h1>
+      <h1>Calculator</h1>
 
       <AddEntryForm products={products} />
 

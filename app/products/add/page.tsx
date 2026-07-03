@@ -1,15 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import {useEffect} from "react";
+import {Html5Qrcode} from "html5-qrcode";
 import styles from "./add.module.css"
 
 export default function AddPage() 
-{
+{ 
     //barkodiniam ivedimui (barcode input)
     const [barcode, setBarcode] = useState("");
     const [result, setResult] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    // QR/Barkodo kodo nuskaitymui (QR/Barcode code scanning)
+    const [scanning, setScanning] = useState(false);
     // Rankiniam ivedimui (manual input)
     const [manualName, setManualName] = useState("");
     const [manualCarbs, setManualCarbs] = useState("");
@@ -65,10 +69,52 @@ export default function AddPage()
         setManualSaved(true);
     }
 
+    useEffect(() =>
+    {
+      if(!scanning) return;
+
+      const scanner = new Html5Qrcode("barcode-reader");
+
+      scanner
+      .start(
+    { facingMode: "environment" }, // back to just one key here
+    {
+      fps: 10,
+      qrbox: { width: 250, height: 150 },
+      videoConstraints: {
+        facingMode: "environment",
+        advanced: [{ focusMode: "continuous" }],
+      } as MediaTrackConstraints,
+    },
+    (decodedText) => {
+      setBarcode(decodedText);
+      setScanning(false);
+    },
+    () => {}
+  )
+
+      .catch((err) =>
+      {
+        console.error("Error starting the scanner:", err);
+        setScanning(false);
+      });
+
+      return () => 
+      {
+        scanner.stop().catch(() => {}); // sustabdyti skeneri, kai komponentas atjungiama (stop the scanner when the component unmounts)
+      }
+
+    }, [scanning]);
+
     return (
     <div>
       <h1>Add Product</h1>
 
+      <button onClick={() => setScanning((s) => !s)}>
+        {scanning ? "Stop Scanning" : "Scan Barcode"}
+      </button>
+
+      {scanning && <div id="barcode-reader" style={{width: 300}}></div>}
       <div className={styles.form}>
         <input
           type="text"
