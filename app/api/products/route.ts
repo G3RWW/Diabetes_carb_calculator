@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/app/auth";
 
 export async function POST(request: NextRequest)
 {
+    const session = await auth();
+
+    if (!session?.user?.id) 
+        {
+            return NextResponse.json({ error: "You must be logged in to add a product" },{ status: 401 });
+        }
+
     const {name, carbsPer100} = await request.json();
 
     if (!name || carbsPer100 == null)
@@ -17,6 +25,7 @@ export async function POST(request: NextRequest)
                 name,
                 carbsPer100,
                 source: "manual",
+                userId: session.user.id,
             },
         });
 

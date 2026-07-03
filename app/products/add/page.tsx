@@ -110,21 +110,23 @@ export default function AddPage()
     <div>
       <h1>Add Product</h1>
 
-      <button onClick={() => setScanning((s) => !s)}>
-        {scanning ? "Stop Scanning" : "Scan Barcode"}
-      </button>
-
-      {scanning && <div id="barcode-reader" style={{width: 300}}></div>}
+      <hr />
       <div className={styles.form}>
-        <input
-          type="text"
-          value={barcode}
-          onChange={(e) => setBarcode(e.target.value)}
-          placeholder="Enter barcode"
-        />
-        <button onClick={handleLookup} disabled={loading}>
-          {loading ? "Looking up..." : "Lookup"}
+        <button onClick={() => setScanning((s) => !s)}>
+          {scanning ? "Stop Scanning" : "Scan Barcode"}
         </button>
+        <p> or </p>
+        {scanning && <div id="barcode-reader" style={{width: 300}}></div>}
+        
+          <input
+            type="text"
+            value={barcode}
+            onChange={(e) => setBarcode(e.target.value)}
+            placeholder="Enter barcode"
+          />
+          <button onClick={handleLookup} disabled={loading}>
+            {loading ? "Looking up..." : "Lookup"}
+          </button>
       </div>
 
       {error && <p className={styles.error}>{error}</p>}

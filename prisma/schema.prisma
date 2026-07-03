@@ -6,6 +6,14 @@ datasource db {
   provider = "sqlite"
 }
 
+model User {
+  id       String   @id @default(cuid())
+  email    String   @unique
+  password String
+  createdAt DateTime @default(now())
+  products Product[]
+  entries Entry[]
+}
 model Product {
   id          String   @id @default(cuid())
   barcode     String?  @unique
@@ -14,6 +22,8 @@ model Product {
   carbsPer100 Float
   kcalPer100  Float?
   source      String   // "openfoodfacts" | "manual"
+  userId     String? //null = benras | set = vartotojo sukurtas (null = shared | set = user created)
+  user       User?    @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   entries     Entry[]
 }
@@ -22,11 +32,12 @@ model Entry {
   id        String   @id @default(cuid())
   product   Product? @relation(fields: [productId], references: [id])
   productId String?
-  // for one-off manual entries with no saved product
   customName String?
   customCarbsPer100 Float?
   amountGrams Float
-  carbsTotal  Float    // computed at save time, so historic entries don't shift if a product's data is edited later
+  carbsTotal  Float
   loggedAt    DateTime @default(now())
-  mealType    String?  // breakfast/lunch/dinner/snack, optional
+  mealType    String?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
 }
