@@ -1,6 +1,6 @@
 {
   "name": "diabeto_skaiciuokle",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,8 +10,8 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@prisma/adapter-better-sqlite3": "^7.8.0",
     "@prisma/client": "^7.8.0",
+    "@vercel/speed-insights": "^2.0.0",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
     "html5-qrcode": "^2.3.8",

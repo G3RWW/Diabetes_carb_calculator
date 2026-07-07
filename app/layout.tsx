@@ -1,4 +1,5 @@
 import AuthProvider from "./components/AuthProvider";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import Nav from "./components/Nav";
 import "./globals.css";
 
