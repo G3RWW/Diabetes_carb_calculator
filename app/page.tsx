@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Entry } from "@prisma/client";
 import { auth } from "@/auth";
 import AddEntryForm from "./AddEntryForm";
 import EntryRow from "./EntryRow";
@@ -21,7 +22,7 @@ export default async function Home() {
     }),
   ]);
 
-  const total = entries.reduce((sum, e) => sum + e.carbsTotal, 0);
+  const total = entries.reduce((sum: number, e: Entry) => sum + e.carbsTotal, 0);
 
   return (
     <main>

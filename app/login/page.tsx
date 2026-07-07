@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import styles from "./login.module.css"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -33,7 +34,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main style={{ padding: 24 }}>
+    <div className={styles.container}>
       <h1>Log in</h1>
       <input
         type="email"
@@ -51,6 +52,6 @@ export default function LoginPage() {
         {loading ? "Logging in..." : "Log in"}
       </button>
       {error && <p style={{ color: "red" }}>{error}</p>}
-    </main>
+    </div>
   );
 }
