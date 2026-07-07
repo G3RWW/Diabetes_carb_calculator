@@ -103,7 +103,7 @@ export default function AddPage()
       videoConstraints: {
         facingMode: "environment",
         advanced: [{ focusMode: "continuous" }],
-      } as MediaTrackConstraints,
+      } as unknown as MediaTrackConstraints,
     },
     (decodedText) => {
       setBarcode(decodedText);
