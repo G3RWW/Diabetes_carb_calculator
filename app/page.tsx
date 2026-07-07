@@ -22,7 +22,7 @@ export default async function Home() {
     }),
   ]);
 
-  const total = entries.reduce((sum: number, e: Entry) => sum + e.carbsTotal, 0);
+  const total = entries.reduce((sum: number, e) => sum + e.carbsTotal, 0);
 
   return (
     <main>
